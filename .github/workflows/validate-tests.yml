@@ -1,0 +1,50 @@
+name: Validate Student Test Submission
+
+on:
+  pull_request:
+    paths:
+      - 'test_classes.py'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install pytest
+
+    - name: Check for merge conflicts
+      run: |
+        git fetch origin main
+        git checkout -b merge-check
+        git merge origin/main --no-commit --no-ff
+        echo "No merge conflicts"
+
+    - name: Count and validate new tests
+      run: |
+        python scripts/validate_tests.py ${{ github.event.pull_request.user.login }}
+
+    - name: Run tests on hidden solutions
+      run: |
+        cp -r hidden_solutions/* .
+        pytest > result.log
+        if grep -q "FAILED" result.log; then
+          echo "Tests failed on sample solutions"
+          exit 1
+        fi
+
+    - name: Log submission
+      if: success()
+      run: |
+        echo "${{ github.event.pull_request.user.login }},${{ github.event.pull_request.html_url }}" >> submission_log.csv
