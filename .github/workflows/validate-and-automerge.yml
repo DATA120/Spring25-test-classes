@@ -21,7 +21,10 @@ jobs:
         echo "$SSH_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan github.com >> ~/.ssh/known_hosts
-        GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" git clone git@github.com:DATA120/Spring25-test-classes-instructors.git
+        export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no"
+        ssh -T git@github.com || true  # optional debug line
+        git clone git@github.com:DATA120/Spring25-test-classes-instructors.git autograder
+
 
     - name: Validate submission
       run: |
