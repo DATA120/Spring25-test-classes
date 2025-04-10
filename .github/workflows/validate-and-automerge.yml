@@ -13,17 +13,9 @@ jobs:
     - name: Checkout student PR
       uses: actions/checkout@v4
 
-    - name: Clone autograder (private)
-      env:
-        SSH_KEY: ${{ secrets.AUTOGRADER_DEPLOY_KEY }}
+    - name: Clone autograder using HTTPS + PAT
       run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no"
-        ssh -T git@github.com || echo "SSH auth failed"
-        git clone git@github.com:DATA120/Spring25-test-classes-instructors.git autograder
+        git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/DATA120/Spring25-test-classes-instructors.git autograder
 
     - name: Validate submission
       run: |
