@@ -50,6 +50,8 @@ class TestShows(unittest.TestCase):
         self.assertRaises(ValueError, badconstruct,
           "Show constructor must raise error when genre is not in provided list")
 
+# Your tests here
+
 
 if __name__ == "__main__":
     unittest.main()
