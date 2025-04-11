@@ -1,0 +1,12 @@
+name: Test Clone with PAT
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-clone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone instructor repo using PAT
+        run: |
+          git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/DATA120/Spring25-test-classes-instructors.git autograder
