@@ -40,7 +40,17 @@ class TestShows(unittest.TestCase):
         construct()
 
 
-# Your tests go here
+# author: Instructors
+    @weight(1)
+    @number("0.2")
+    def test_show_raises(self):
+        '''Test Show constructor raises error when genre is not one of 6 provided'''
+        def badconstruct(self):
+            return Show("PBS", "Antiques Roadshow", "24-2", "A rare Magic: The Gathering card collection stuns appraisers with a six-figure value in Bonanzaville.", "Human Interest", 1300, 1400, False)
+        self.assertRaises(ValueError, badconstruct,
+          "Show constructor must raise error when genre is not in provided list")
+
+# Your tests here
 
 
 if __name__ == "__main__":
