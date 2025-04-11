@@ -15,7 +15,7 @@ they are required to do, namely:
 - [ ]  Show.duration correctly implemented
 - [ ]  Show.season correctly implemented
 - [ ]  Show.is_primetime correctly implemented
-- [ ]  Show.__str__ implemented
+- [ ]  Show.`__str__` implemented
 - [ ]  Guide constructor checks argument is a list
 - [ ]  Guide constructor checks that elements are Show objects
 - [ ]  Guide constructor checks that list is not empty
