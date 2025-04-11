@@ -6,11 +6,11 @@ from os.path import exists
 from gradescope_utils.autograder_utils.decorators import weight, number
 
 try:
-    from pa4 import 
+    from pa4 import Show
 except ImportError:
     pass
 try:
-    from pa4 import 
+    from pa4 import Guide
 except ImportError:
     pass
 
