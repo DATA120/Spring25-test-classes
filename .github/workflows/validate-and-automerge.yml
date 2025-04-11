@@ -49,6 +49,7 @@ jobs:
             body: `❌ **Your submission failed validation.**\n\n\`\`\`\n${msg}\n\`\`\`\nPlease revise and resubmit.`
           });
 
+
     - name: Auto-merge passing PR
       if: steps.result.outputs.merge == 'yes'
       uses: peter-evans/enable-pull-request-automerge@v3
