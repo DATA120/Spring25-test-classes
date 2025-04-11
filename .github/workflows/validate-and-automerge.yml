@@ -13,16 +13,20 @@ jobs:
     - name: Checkout student PR
       uses: actions/checkout@v4
 
-    - name: Clone autograder using HTTPS + PAT
+    - name: Clone instructor repo using PAT
       run: |
         git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/DATA120/Spring25-test-classes-instructors.git autograder
+
+    - name: Install Python dependencies (optional)
+      run: |
+        pip install pytest
 
     - name: Validate submission
       run: |
         python3 autograder/scripts/validate_tests.py "${{ github.event.pull_request.user.login }}" > result.txt 2>&1 || echo "FAILED" >> result.txt
         cat result.txt
 
-    - name: Check result
+    - name: Check validation result
       id: result
       run: |
         if grep -q "FAILED" result.txt; then
@@ -31,7 +35,7 @@ jobs:
           echo "merge=yes" >> $GITHUB_OUTPUT
         fi
 
-    - name: Comment on failure
+    - name: Comment on failed submission
       if: steps.result.outputs.merge == 'no'
       uses: actions/github-script@v7
       with:
@@ -45,9 +49,9 @@ jobs:
             body: `❌ **Your submission failed validation.**\n\n\`\`\`\n${msg}\n\`\`\`\nPlease revise and resubmit.`
           });
 
-    - name: Auto-merge passing PRs
+    - name: Auto-merge passing PR
       if: steps.result.outputs.merge == 'yes'
-      uses: "peter-evans/enable-pull-request-automerge@v3"
+      uses: peter-evans/enable-pull-request-automerge@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         merge-method: squash
